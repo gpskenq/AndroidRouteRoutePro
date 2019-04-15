@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import jp.co.nri.route.R;
 import jp.co.nri.route.base.BaseActivity;
 import jp.co.nri.route.base.BaseApplication;
@@ -17,9 +18,12 @@ import jp.co.yahoo.android.maps.MapView;
 
 public class OwnerEventActivity extends BaseActivity<OwnerEventActivePresenter> implements IOwnerEventActiveView {
 
-    @BindView(R.id.fLMap) FrameLayout fLMap;
-    @BindView(R.id.tvToolbarBack) TextView tvToolbarBack;
-    @BindView(R.id.tvToolbarTitle) TextView tvToolbarTitle;
+    @BindView(R.id.fLMap)
+    FrameLayout fLMap;
+    @BindView(R.id.tvToolbarBack)
+    TextView tvToolbarBack;
+    @BindView(R.id.tvToolbarTitle)
+    TextView tvToolbarTitle;
     private MapView mapView;
 
 
@@ -44,6 +48,15 @@ public class OwnerEventActivity extends BaseActivity<OwnerEventActivePresenter> 
         mapView.setScalebar(true);
         presenter.setEvent((Event) getIntent().getSerializableExtra("event"));
         presenter.guestLocations();
+    }
+
+    @OnClick({R.id.tvToolbarBack})
+    void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvToolbarBack:
+                finish();
+                break;
+        }
     }
 
     @Override

@@ -49,16 +49,24 @@ public class OwnerEventActivePresenter extends BasePresenter<IOwnerEventActiveVi
         assert curr != null;
         targetDrawable = AppUtil.zoomDrawable(curr, targetSize, targetSize);
 
-        BaseApplication.getApplication().getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(view == null || event == null){
-                    return;
-                }
-                guestLocations();
-                BaseApplication.getApplication().getHandler().postDelayed(this, 10000);
+        BaseApplication.getApplication().getHandler().postDelayed(runnable, 10 * 1000);
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if(view == null || event == null){
+                return;
             }
-        }, 10 * 1000);
+            guestLocations();
+            BaseApplication.getApplication().getHandler().postDelayed(this, 10000);
+        }
+    };
+
+    @Override
+    protected void unsubscribe() {
+        BaseApplication.getApplication().getHandler().removeCallbacks(runnable);
+        super.unsubscribe();
     }
 
     /**

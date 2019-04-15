@@ -23,7 +23,7 @@ public abstract class BasePresenter<T> {
     }
 
 
-    void unsubscribe() {
+    protected void unsubscribe() {
         if (mDisposables != null && mDisposables.size()>0) {
             mDisposables.dispose();
         }

@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 
+import org.codehaus.jackson.map.MapperConfig;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -128,16 +130,24 @@ public class UserEventActivePresenter extends BasePresenter<IUserEventActiveView
         //ナビゲーションアイコン
         //mapView.getOverlays().add(overlay);
         view.getMapView().invalidate();
-        BaseApplication.getApplication().getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                if (view == null) {
-                    return;
-                }
-                historyLocation();
-                BaseApplication.getApplication().getHandler().postDelayed(this, 1000*60);
+        BaseApplication.getApplication().getHandler().post(runnable);
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (view == null) {
+                return;
             }
-        });
+            historyLocation();
+            BaseApplication.getApplication().getHandler().postDelayed(this, 1000*60);
+        }
+    };
+
+    @Override
+    protected void unsubscribe() {
+        BaseApplication.getApplication().getHandler().removeCallbacks(runnable);
+        super.unsubscribe();
     }
 
     /**
